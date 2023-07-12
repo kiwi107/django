@@ -1,0 +1,145 @@
+/* Import Google font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+/* .wrapper {
+    max-width: 1100px;
+    width: 100%;
+    position: relative;
+} */
+.wrapper {
+    max-width: 1100px;
+    width: 100%;
+    position: relative;
+    margin: 0 auto; /* Add this line to center the wrapper horizontally */
+}
+
+
+.wrapper i {
+    top: 50%;
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+    font-size: 1.25rem;
+    position: absolute;
+    text-align: center;
+    line-height: 50px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.23);
+    transform: translateY(-50%);
+    transition: transform 0.1s linear;
+    margin-top: -0.5cm; /* Adjust the margin-top value to move the buttons */
+}
+
+.wrapper i:first-child {
+    left: -3cm; /* Adjust the left value to move the button */
+}
+
+.wrapper i:last-child {
+    right: -3cm; /* Adjust the right value to move the button */
+}
+
+.wrapper i:active {
+    transform: translateY(-50%) scale(0.85);
+}
+
+
+
+/* .wrapper .carousel {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: calc((100% / 3) - 12px);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 16px;
+    border-radius: 8px;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    list-style: none;
+} */
+
+.carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel.no-transition {
+    scroll-behavior: auto;
+}
+
+.carousel.dragging {
+    scroll-snap-type: none;
+    scroll-behavior: auto;
+}
+
+.carousel.dragging .card {
+    cursor: grab;
+    user-select: none;
+}
+
+.carousel :where(.card, .img) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* .carousel .card {
+    scroll-snap-align: start;
+    list-style: none;
+    background: #fff;
+    cursor: pointer;
+
+    flex-direction: column;
+  
+} */
+.wrapper .carousel {
+    display: flex;
+    justify-content: flex-start; /* Change this line to start from the left */
+    align-items: center;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 16px;
+    border-radius: 8px;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    list-style: none;
+    width: 100%; /* Set the width to 100% to take the entire available space */
+    padding-right: 1140px; /* Add padding to the right to increase the width */
+    margin-left: -30px;
+}
+
+.carousel .card {
+    scroll-snap-align: start;
+    list-style: none;
+    background: #fff;
+    cursor: pointer;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
+
+@media screen and (max-width: 900px) {
+    .wrapper .carousel {
+        grid-auto-columns: calc((100% / 2) - 9px);
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .wrapper .carousel {
+        grid-auto-columns: 100%;
+    }
+}
+.sliderTitle{
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #0786da;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 2cm;
+}
+
+

@@ -1,0 +1,111 @@
+{% extends "app/layout.html" %}
+{% load static %}
+{% block title %} Order Details{% endblock %}
+
+{% block head %}
+<link href="{% static 'app/css/cart.css' %}" rel="stylesheet">
+
+
+
+{% endblock %}
+
+{% block body %}
+
+
+
+
+
+
+
+
+<div class="container">
+    <h3>Order Details</h3>
+    <hr style="color: black;">
+    {% for orderItem in orderItems %}
+    <div class="row">
+        <div class="col-3">
+            <img class="img-fluid" src="{{orderItem.product.img.url}}" style="height: 4cm;">
+        </div>
+        <div class="col-9">
+            <p>
+            <h6>{{ orderItem.product.title }}</h6>
+            </p>
+            <p>
+            <h6>{{ orderItem.product.price }} EGP</h6>
+            </p>
+            <p>
+            <h6 style="display: inline-block;">Quantity:</h6> {{ orderItem.quantity }}<p>
+            <p>
+            <h6 style="display: inline-block;">size:</h6> {{ orderItem.size }}<p>
+            <p>
+            <h6 style="display: inline-block;"> color:</h6> {{ orderItem.color }}<p>
+                <hr style="color: black;">
+        </div>
+
+
+    </div>
+
+
+    {% endfor %}
+    <div class="row">
+        <div class="col-3">
+
+        </div>
+        <div class="col-9">
+            <p>
+            <h6 style="display: inline-block;">Number of items:</h6> {{orderCount}}</p>
+            <p>
+            <h6 style="display: inline-block;">Total:</h6> {{ order.total}}</p>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <h3>Order Info</h3>
+            <hr style="color: black;">
+            <p>
+            <h6 style="display: inline-block;">Delivered To:</h6> {{order.user}}</p>
+            <P>
+            <h6 style="display: inline-block;">Order Id:</h6> {{order.id}}</P>
+            <p>
+            <h6 style="display: inline-block;">Order Date:</h6> {{ order.order_date}}</p>
+            <p>
+            <h6 style="display: inline-block;">Shipping Address:</h6> {{order.user.address}} </p>
+            <p>
+            <h6 style="display: inline-block;">Phone Number:</h6> {{order.user.phone_number}}</p>
+            <p>
+            <h6 style="display: inline-block;">Order Status:</h6> {{ order.status}}</p>
+
+
+        </div>
+    </div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

@@ -1,0 +1,276 @@
+{% extends "app/layout.html" %}
+{% load static %}
+{% block title %}{{ Product.title }}{% endblock %}
+
+
+{% block head %}
+<link href="{% static 'app/css/product.css' %}" rel="stylesheet">
+
+
+
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div id="productDetails" class="row m-3">
+        <div class="col-9 col-lg-4">
+            <img src="{{ Product.img.url }}" alt="{{ Product.title }}" class="img-fluid  m-3 bigimg">
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <h1 class="my-3s"> {{ Product.title }} </h1>
+            <h4>Available Sizes</h4>
+            <div class="btn-group sizeGrp" role="group" aria-label="Basic radio toggle button group">
+                {% for size in allSizes%}
+                <input type="radio" class="btn-check" name="size" id="size{{ size.id }}" autocomplete="off">
+                <label class="btn btn-outline-dark mr-2" for="size{{ size.id }}">{{ size.name }}</label>
+                {%endfor%}
+            </div>
+            <p class="error" id="messageSize"></p>
+
+
+            <p>not sure of your size, <a class="showsizechart">check size chart</a></p>
+
+
+
+            <img src="{% static 'app/img/SizeChart.png' %}" class="sizechart">
+
+
+
+
+            <h4>Available Colors</h4>
+            <div class="btn-group colorGrp" role="group" aria-label="Basic radio toggle button group">
+                {% for color in allColors %}
+                <input type="radio" class="btn-check" name="color" id="color{{ color.id }}" autocomplete="off">
+                <label class="btn btn-outline-dark mr-2" for="color{{ color.id }}">{{ color.name }}</label>
+                {%endfor%}
+
+            </div>
+            <p class="error" id="messageColor"></p>
+            <br>
+            <br>
+            <h4>Quantity</h4>
+            <div class="counter">
+                <span class="minus">-</span>
+                <span class="number">1</span>
+                <span class="plus">+</span>
+            </div>
+            <br>
+            <h5>EGP {{ Product.price }}</h5>
+
+            {% if user.is_authenticated%}
+            <form id="cartForm" action="{% url 'addToCart' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ Product.id }}">
+                <input type="hidden" name="color" id="selectedColor" value="">
+                <input type="hidden" name="size" id="selectedSize" value="">
+                <input type="hidden" name="quantity" id="selectedquantity" value="">
+                <button type="submit" id="add-to-cart">Add to cart<svg class="ml-1" xmlns="http://www.w3.org/2000/svg"
+                        width="16" height="16" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
+                        <path
+                            d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+                    </svg></button>
+            </form>
+            {% else %}
+            <a class="btn btn-primary" href="{% url 'login' %}">add to cart</a>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <div class="row text-center">
+        <h3 class="m-5">Comments</h3>
+
+    </div>
+    <div class="row">
+        <form id="commentsForm" action="{% url 'comment' id=Product.id %}" method="post">
+            {% csrf_token %}
+            <input id="product_id" type="hidden" name="product_id" value="{{ Product.id }}">
+            <div class="row">
+                <div class="col-8">
+                    <textarea id="textarea" placeholder="add comment" name="comment" rows="3"
+                        class="form-control"></textarea>
+                </div>
+                <div class="col-4 text-center">
+                    <input class="btn btn-dark" type="submit" value="add comment">
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div id="commentRow" class="row">
+        {% for comment in allComments %}
+        <div class="col-8 my-2">
+            <div class="card">
+                <div class="card-body">
+                    <p>{{ comment.comment }}</p>
+                    <strong>
+                        <p>By: {{ comment.user }}</p>
+                    </strong>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+
+
+
+
+
+{% endblock %}
+
+
+{% block scripts %}
+
+
+
+<!-- keep refreshing comments -->
+<script>
+    let id = "{{ Product.id }}";
+    const commentSocket = new WebSocket(
+        'ws://' + window.location.host + '/ws/comment/' + id + '/'
+    );
+
+
+
+    commentSocket.onmessage = function (event) {
+        const message = JSON.parse(event.data);
+        console.log(message.status);
+        if (message.status === "received") {
+            $('#commentRow').load(location.href + " #commentRow>*", "");
+        }
+    };
+
+
+
+
+
+</script>
+<!-- submit form with ajax -->
+<script type="text/javascript">
+
+    $(document).on('submit', '#commentsForm', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url "comment" id=Product.id %}',
+            data: {
+                comment: $('#textarea').val(),
+                product_id: $('#product_id').val(),
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+            },
+            success: function (response) {
+                if (response.message == "empty") {
+                    $('#textarea').attr('placeholder', 'please add comment before submitting');
+                    $('#textarea').css('border', '2px solid red');
+
+
+
+                }
+                else if (response.message == "added") {
+
+                    let id = "{{ Product.id }}";
+                    const commentSocket = new WebSocket(
+                        'ws://' + window.location.host + '/ws/comment/' + id + '/'
+                    );
+                    commentSocket.onopen = function (event) {
+                        commentSocket.send(JSON.stringify({
+                            'message': 'new comment'
+                        }));
+                    };
+
+
+                    commentSocket.onmessage = function (event) {
+                        const message = JSON.parse(event.data);
+                        console.log(message.status);
+                        if (message.status === "received") {
+                            $('#commentRow').load(location.href + " #commentRow>*", "");
+                        }
+                    };
+
+
+
+                    $('#textarea').val('');
+                    $('#textarea').attr('placeholder', 'add comment');
+                    $('#textarea').css('border', '1px solid #ced4da');
+                }
+
+            }
+        });
+    });
+
+    $(document).on('submit', '#cartForm', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '{% url "addToCart" %}',
+            data: {
+                id: $('#cartForm input[name="id"]').val(),
+                color: $('#cartForm input[name="color"]').val(),
+                size: $('#cartForm input[name="size"]').val(),
+                quantity: $('#cartForm input[name="quantity"]').val(),
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+            },
+            success: function (response) {
+                if (response.message == "added") {
+                    //refresh cart icon
+                    $("#cartIcon").load(location.href + " #cartIcon>*", "");
+
+                    //show tooltip
+                    $(".cartTooltip").tooltip('dispose'); // Dispose any existing tooltip
+                    $(".cartTooltip").tooltip({
+                        title: "Item added to cart",
+                        placement: "bottom",
+                        trigger: "manual"
+                    });
+                    $(".cartTooltip").tooltip('show');
+                    setTimeout(function () {
+                        $(".cartTooltip").tooltip('hide');
+                    }, 2000);
+
+                    //reset size & color & quantity selection
+                    $('.sizeGrp').find('input').prop('checked', false);
+                    $('.colorGrp').find('input').prop('checked', false);
+                    $('.number').html('1');
+                    // count = 1;
+
+                    //reset form
+                    $('#cartForm input[name="color"]').val('');
+                    $('#cartForm input[name="size"]').val('');
+                    $('#cartForm input[name="quantity"]').val('');
+                    $('#cartForm input[name="quantity"]').val(1);
+
+                    //reset error messages
+                    $('#messageColor').html('');
+                    $('#messageSize').html('');
+
+
+
+
+                }
+                if (response.messageSize == "no size") {
+                    $('#messageSize').html('please select size');
+                }
+
+                if (response.messageColor == "no color") {
+                    $('#messageColor').html('please select color');
+                }
+
+
+            }
+
+        });
+    });
+
+</script>
+<script src="{% static 'app/js/counter.js' %}"></script>
+<script src="{% static 'app/js/sizeChartToggle.js' %}"></script>
+<script src="{% static 'app/js/productFormData.js' %}"></script>
+
+
+{% endblock %}

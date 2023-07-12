@@ -1,0 +1,93 @@
+{% extends "app/layout.html" %}
+{% load static %}
+{% block title %} Track Order{% endblock %}
+{% block head %}
+<link href="{% static 'app/css/cart.css' %}" rel="stylesheet">
+{% endblock %}
+{% block body %}
+<div class="container">
+    <h3>displaying</h3>
+    <select id="status-select" class="form-select" aria-label="Default select example">
+        <option value="inProcess">In Process</option>
+        <option value="delivered">Delivered</option>
+    </select>
+    <div class="delivered">
+        {% for order, orderItems in orderItemsResult %}
+        {%if order.status == "Delivered"%}
+        <p>
+            <h6 style="display: inline-block;">Order id:</h6> {{ order.id }}</p>
+            <div class="row">
+                <div class="col">
+                    <div style="display: inline-block;">
+                        <h6 style="display: inline-block;">Products:</h6>
+                        {% for orderItem in orderItems %}
+                        <span style="display: inline-block;">{{ orderItem.product.title }}</span> 
+                       
+                        {% if not forloop.last %}
+                        <span>, </span>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                    <p>
+                    <h6 style="display: inline-block;">Placed at:</h6> {{ order.order_date }}</p>
+                    <p>
+                    <h6 style="display: inline-block;">Total:</h6> {{ order.total}}</p>
+                    <p>
+                    <h6 style="display: inline-block;">Status:</h6> {{ order.status }} </p>
+                    <a class="btn btn-dark" href="{% url 'orderDetails' id=order.id %}">view order</a>
+                    <hr style="color: black;">
+                </div>
+            </div>
+        {%endif%}
+        {% endfor %}
+    </div>
+    <div class="inProcess">
+        {% for order, orderItems in orderItemsResult %}
+        {%if order.status != "Delivered"%}
+        <p>
+        <h6 style="display: inline-block;">Order id:</h6> {{ order.id }}</p>
+        <div class="row">
+            <div class="col">
+                <div style="display: inline-block;">
+                    <h6 style="display: inline-block;">Products:</h6>
+                    {% for orderItem in orderItems %}
+                    <span style="display: inline-block;">{{ orderItem.product.title }}</span> 
+                   
+                    {% if not forloop.last %}
+                    <span>, </span>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <p>
+                <h6 style="display: inline-block;">Placed at:</h6> {{ order.order_date }}</p>
+                <p>
+                <h6 style="display: inline-block;">Total:</h6> {{ order.total}}</p>
+                <p>
+                <h6 style="display: inline-block;">Status:</h6> {{ order.status }} </p>
+                <a class="btn btn-dark" href="{% url 'orderDetails' id=order.id %}">view order</a>
+                <hr style="color: black;">
+            </div>
+        </div>
+        {%endif%}
+        {% endfor %}
+    </div>
+    <script>
+        var delivered = document.querySelector(".delivered");
+        var inProcess = document.querySelector(".inProcess");
+        var select = document.getElementById("status-select");
+        delivered.style.display = "none";
+        select.addEventListener("change", function () {
+            var selectedValue = select.value;
+            if (selectedValue === "inProcess") {
+                delivered.style.display = "none";
+                inProcess.style.display = "block";
+            } else if (selectedValue === "delivered") {
+                delivered.style.display = "block";
+                inProcess.style.display = "none";
+            }
+        });
+    </script>
+</div>
+{% endblock %}
+{% block scripts %}
+{% endblock %}

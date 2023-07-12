@@ -1,0 +1,121 @@
+{% extends "app/layout.html" %}
+{% load static %}
+{% block title %} Wishlist{% endblock %}
+
+{% block head %}
+<link href="{% static 'app/css/cards.css' %}" rel="stylesheet">
+
+
+
+{% endblock %}
+
+{% block body %}
+
+<div class="container text-center">
+    <div id="deleteCards" class="row gy-3 ">
+        {% for p in wishlist %}
+
+
+
+
+        <div class="col-lg-3 col-md-4 col-sm-4 ">
+
+            <div class="card mx-auto {{ product.gender }}">
+                <a class="card-anchor">
+                    <img src="{{ p.product.img.url }}" class="card-img-top card-img" alt="{{ p.product.title }}">
+                    <div class="card-body">
+                        <p class="card-text">{{ p.product.title }}</p>
+                        <div class="row" style="display: inline-block;">
+                            <div class="col">
+                                <p class="currency">EGP</p>
+                                <p class="price">{{ p.product.price }}</p>
+                            </div>
+                        </div>
+                        <div class="row my-2 no-gutters">
+                            <div class="col-10">
+                                <a class="btn btn-dark ml-5" href="{% url 'product' id=p.product.id %}">View
+                                    Product</a>
+                            </div>
+                            <div class="col-2">
+                                <form class="submitWishlist" action="{% url 'addToWishlist' callingPage='category' %}"
+                                    method="post">
+                                    {% csrf_token %}
+                                    <input id="id_{{ p.product.id }}" type="hidden" name="id"
+                                        value="{{ p.product.id }}">
+
+
+
+                                    <button class="mr-3"><svg xmlns="http://www.w3.org/2000/svg" height="20"
+                                            fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path
+                                                d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                                            <path
+                                                d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+                                        </svg>
+                                    </button>
+
+                                    <style>
+                                        .submitWishlist button {
+                                            border: none;
+                                            background-color: transparent;
+                                        }
+                                    </style>
+
+
+
+                                </form>
+
+
+                            </div>
+
+
+
+
+
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+
+        </div>
+
+
+        {% empty %}
+        <p>No products found.</p>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+
+
+<script type="text/javascript">
+    $(document).on('submit', '.submitWishlist', function (e) {
+        e.preventDefault();
+        var form = $(this);
+        var productId = form.find("input[name='id']").val();
+        $.ajax({
+            type: 'POST',
+            url: '{% url "addToWishlist" callingPage="category" %}',
+            data: {
+                id: productId,
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+            },
+            success: function (response) {
+                $("#wishlistIcon").load(location.href + " #wishlistIcon>*", "");
+
+
+                $("#deleteCards").load(location.href + " #deleteCards>*", "");
+            }
+        });
+    });
+
+</script>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'app/js/categoryFormData.js' %}"></script>
+{% endblock %}

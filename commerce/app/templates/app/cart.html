@@ -1,0 +1,95 @@
+{% extends "app/layout.html" %}
+{% load static %}
+{% block title %} Cart{% endblock %}
+{% block head %}
+<link href="{% static 'app/css/cart.css' %}" rel="stylesheet">
+
+
+
+{% endblock %}
+
+{% block body %}
+<section class="container content-section">
+    <h2 class="section-header">CART</h2>
+    <div class="cart-row">
+        <span class="cart-item cart-header cart-column">ITEM</span>
+        <span class="cart-price cart-header cart-column">PRICE</span>
+        <span class="cart-quantity cart-header cart-column">QUANTITY</span>
+    </div>
+    <div class="cart-items">
+        {% for p in cart%}
+        <div class="cart-row deleteCartItem">
+            <div id="C{{p.id}}" class="cart-item cart-column">
+                <div class="row">
+                    <div class="col-4">
+                        <img class="cart-item-image" src="{{p.product.img.url}}" width="100" height="100">
+
+                    </div>
+                    <div class="col-8 text-left">
+                        <p class="cart-item-title">{{p.product.title}}</p>
+                        <p class="cart-item-title">Color: {{p.color}}</p>
+                        <p class="cart-item-title">Size: {{p.size}}</p>
+                    </div>
+                </div>
+
+
+            </div>
+            <span class="cart-price cart-column">EGP {{p.product.price}}</span>
+            <div class="cart-quantity cart-column">
+                <p class="mx-5">{{p.quantity}}</p>
+                {% if user.is_authenticated%}
+
+                <form class="removeFromCartForm" action="{% url 'removeFromCart' callingPage='cart' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" value="{{ p.id }}">
+                    <input type="submit" class="btn btn-danger" value="Remove from Cart">
+                </form>
+
+                {% endif %}
+
+
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <div class="cart-total">
+        <strong class="cart-total-title">Total</strong>
+        <span class="cart-total-price">{{ total }}</span>
+    </div>
+    <form id="placeOrderForm" action="{% url 'placeOrder' %}" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="total" value="{{ total }}">
+        <input class="btn btn-primary btn-purchase" type="submit" value="Purchase">
+    </form>
+
+</section>
+<script type="text/javascript">
+    $(document).on('submit', '.removeFromCartForm', function (e) {
+        e.preventDefault();
+        var form = $(this);
+        var productId = form.find("input[name='id']").val();
+        $.ajax({
+            type: 'POST',
+            url: '{% url "removeFromCart" callingPage="cart" %}',
+            data: {
+                id: productId,
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+            },
+            success: function (response) {
+                $("#cartIcon").load(location.href + " #cartIcon>*", "");
+
+                $(".content-section").load(location.href + " .content-section>*", ""); 
+            }
+        });
+    });
+
+</script>
+
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

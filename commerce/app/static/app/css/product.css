@@ -1,0 +1,103 @@
+.showsizechart {
+    color: rgb(135, 132, 132) !important;
+}
+
+.showsizechart:hover {
+    text-decoration: underline !important;
+    color: rgb(171, 165, 165) !important;
+    cursor: pointer;
+
+}
+
+.sizechart {
+    width: 10cm;
+}
+
+.bigimg {
+    width: 10cm;
+    height: 10cm;
+}
+
+
+.titles {
+    text-align: center !important;
+    font-size: 30px;
+    font-family: cursive;
+    margin-top: 1cm;
+    margin-bottom: 1cm;
+}
+
+.counter {
+
+    display: flex;
+    border-radius: 3px;
+    border: 1px solid;
+    width: 3cm;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: bold;
+
+}
+
+.number {
+    text-align: center;
+    border-left: 1.5px solid rgb(0, 0, 0, 0.2);
+    border-right: 1.5px solid rgb(0, 0, 0, 0.2);
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.plus {
+    font-size: 23px;
+    margin-left: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.minus {
+    font-size: 23px;
+    margin-right: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+
+
+
+
+#add-to-cart {
+    position: relative;
+    display: inline-block;
+    padding: 10px;
+    font-size: 13px;
+    border: none;
+    background-color: black;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 3.5cm;
+    border-radius: 4px;
+}
+
+#add-to-cart svg {
+    display: none;
+    position: absolute;
+    margin-top: 3px;
+} 
+
+#add-to-cart:hover {
+    background-color: #0786da;
+    color: #fff;
+    padding-right: 30px;
+}
+
+#add-to-cart:hover svg {
+    display: inline-block; 
+}
+
+.error{
+    color: rgb(150, 33, 33);
+    font-size: 20px;
+   
+}

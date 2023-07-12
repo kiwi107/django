@@ -1,0 +1,91 @@
+.navbar-brand img {
+    width: 1.5cm;
+    height: 1cm;
+    margin-left: 1cm;
+    padding: 0;
+}
+
+.navbar {
+    font-weight: bold;
+    font-family: 'Tajawal', sans-serif;
+}
+
+.nav-link {
+    color: #000000 !important;
+}
+
+.nav-link:hover {
+    color: #0786da !important;
+}
+
+footer {
+    margin-top: 1cm;
+    width: 100%;
+}
+
+.footerText {
+    color: #000000
+}
+
+.footerAnchor {
+    color: #000000;
+    text-decoration: none !important;
+}
+
+.footerAnchor:hover {
+    color: #0786da;
+}
+
+
+#abovenavbar {
+    padding: 0;
+    margin-top: 1cm;
+    color: #0786da;
+    font-family: 'Tajawal', sans-serif;
+    text-align: center;
+    font-weight: bold;
+}
+
+.nav-icon {
+    margin-left: 10px;
+    width: 0.6cm;
+    color: blue;
+}
+
+
+
+.btnstyle {
+    font-weight: bold;
+
+}
+
+.btnstyle:hover {
+    color: #0786da;
+    border: none;
+}
+
+#navbarNav {
+    float: right;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+   
+
+}
+
+
+.content {
+    margin-top: 2cm;
+    min-height: 70vh;
+}
+.cartTooltip{
+    z-index: 200;
+}
+.wishlistTooltip{
+    z-index: 200;
+}
+

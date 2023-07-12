@@ -1,0 +1,77 @@
+{% extends "app/layout.html" %}
+{% load static %}
+
+{% block title %}about us{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'app/css/aboutUs.css' %}">
+{% endblock %}
+
+{% block body %}
+
+<div class="row first">
+    <div class="col">
+        <img src="{% static 'app/icons/logo.png' %}" alt="Minimeez logo" id="ogo">
+        <h2 style="color: white;" class="text-center my-5">because our kids deserve the best</h2>
+    </div>
+</div>
+<div class="row no-gutters">
+    <h1 class="Header1">
+        ABOUT US
+    </h1>
+
+    <div class="col-12 col-lg-6 firstCol">
+        <h1 class="header2 text-center">
+            Who are we?
+        </h1>
+        <p class="paragraph">
+            Minimeez was established in 2018 to provide a distinguished service to the Egyptian mothers by
+            providing the best
+            and finest baby products from all over the world in a very competitive prices , As we are the only
+            company in Egypt
+            that offers many distinctibe products through our website and our store That's located in Al-Rehab
+            City, New Cairo
+            and also through our Facebook page.
+        </p>
+        <p class="paragraph">
+            We still striving to provide all the needs of our children always and forever while making sure that
+            every mother
+            has an enjoyable and satisfying shopping experience because the satisfaction of our customers is our
+            real capital
+            as we consider ourselves as a service and a message providers, not only as an outlet.
+        </p>
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                <h2 class="mission-vision text-center">Our Vision</h2>
+                <p class="paragraph">
+                    To be the first and best comfortable place for every mother go shopping for her children in
+                    Egypt.
+                </p>
+            </div>
+            <div class="col-12 col-lg-6">
+                <div>
+
+                    <h2 class="mission-vision text-center">Our Mission</h2>
+                    <p class="paragraph">
+                        For every mom to have an enjoyable and satisfied buying experience for herself and her
+                        kids
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <h1 class="header5">
+                        Minimeez Family
+                    </h1>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-lg-6 secondCol">
+        <img src="{% static 'app/img/boy.jpg' %}" alt="el 3ayel el soghyr" id="boy">
+    </div>
+</div>
+
+{% endblock %}
