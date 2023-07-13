@@ -78,11 +78,15 @@ def category(request, name):
     selectedCategory = Category.objects.get(name=name)
     allProducts = product.objects.filter(category=selectedCategory)
     inwishlist=[]
-    for item in allProducts:
-        try:
-            wishlist = Wishlist.objects.get(user=request.user, product=item)
-            inwishlist.append(True)
-        except Wishlist.DoesNotExist:
+    if request.user.is_authenticated:
+       for item in allProducts:
+           try:
+               wishlist = Wishlist.objects.get(user=request.user, product=item)
+               inwishlist.append(True)
+           except Wishlist.DoesNotExist:
+               inwishlist.append(False)
+    else:
+        for item in allProducts:
             inwishlist.append(False)
 
     wishlist_product = zip(allProducts, inwishlist)
